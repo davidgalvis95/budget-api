@@ -37,7 +37,7 @@ data class BudgetCategory(
     @Column(name = "effective_date")
     var effectiveDate: LocalDate? = null,
 
-    @Column(name = "effective_date")
+    @Column(name = "end_date")
     var endDate: LocalDate? = null,
 
     @Column(name = "created_at", nullable = false, updatable = false)

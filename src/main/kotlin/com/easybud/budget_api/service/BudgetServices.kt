@@ -33,7 +33,8 @@ class BudgetCategoryService(
             categoryType = request.categoryType,
             itemType = request.itemType,
             recurrencyType = request.recurrencyType,
-            effectiveDate = request.effectiveDate
+            effectiveDate = request.effectiveDate,
+            endDate = request.endDate
         )
 
         val saved = categoryRepository.save(category)
@@ -60,6 +61,7 @@ class BudgetCategoryService(
         request.itemType?.let { category.itemType = it }
         request.recurrencyType?.let { category.recurrencyType = it }
         request.effectiveDate?.let { category.effectiveDate = it }
+        request.endDate?.let { category.endDate = it }
 
         val updated = categoryRepository.save(category)
         return updated.toResponse()
@@ -92,7 +94,7 @@ class BudgetCategoryService(
         itemType = this.itemType,
         recurrencyType = this.recurrencyType,
         effectiveDate = this.effectiveDate,
-        endDate = this.e,
+        endDate = this.endDate,
         createdAt = this.createdAt,
         updatedAt = this.updatedAt
     )
@@ -111,8 +113,6 @@ class BudgetAmountService(
         val amount = BudgetAmount(
             category = category,
             amount = request.amount,
-            periodStart = request.periodStart,
-            periodEnd = request.periodEnd,
             note = request.note
         )
 
@@ -139,8 +139,6 @@ class BudgetAmountService(
             .orElseThrow { NoSuchElementException("Amount with id $id not found") }
 
         request.amount?.let { amount.amount = it }
-        request.periodStart?.let { amount.periodStart = it }
-        request.periodEnd?.let { amount.periodEnd = it }
         request.note?.let { amount.note = it }
 
         val updated = amountRepository.save(amount)
@@ -155,7 +153,7 @@ class BudgetAmountService(
     }
 
     fun getBudgetSummary(startDate: LocalDate, endDate: LocalDate): BudgetSummaryResponse {
-        val amounts = amountRepository.findByPeriodBetween(startDate, endDate)
+        val amounts = amountRepository.findByCategoryPeriodBetween(startDate, endDate)
 
         val incomes = amounts.filter { it.category.categoryType == CategoryType.INCOME }
         val expenses = amounts.filter { it.category.categoryType == CategoryType.EXPENSE }
@@ -184,8 +182,6 @@ class BudgetAmountService(
         categoryId = this.category.id!!,
         categoryName = this.category.name,
         amount = this.amount,
-        periodStart = this.periodStart,
-        periodEnd = this.periodEnd,
         note = this.note,
         createdAt = this.createdAt,
         updatedAt = this.updatedAt

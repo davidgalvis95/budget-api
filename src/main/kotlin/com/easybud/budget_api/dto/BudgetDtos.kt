@@ -64,18 +64,11 @@ data class CreateAmountRequest(
     @field:Positive(message = "Amount must be positive")
     val amount: BigDecimal,
 
-    @field:NotNull(message = "Period start is required")
-    val periodStart: LocalDate,
-
-    val periodEnd: LocalDate? = null,
-
     val note: String? = null
 )
 
 data class UpdateAmountRequest(
     val amount: BigDecimal? = null,
-    val periodStart: LocalDate? = null,
-    val periodEnd: LocalDate? = null,
     val note: String? = null
 )
 
@@ -84,8 +77,6 @@ data class AmountResponse(
     val categoryId: Long,
     val categoryName: String,
     val amount: BigDecimal,
-    val periodStart: LocalDate,
-    val periodEnd: LocalDate?,
     val note: String?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime

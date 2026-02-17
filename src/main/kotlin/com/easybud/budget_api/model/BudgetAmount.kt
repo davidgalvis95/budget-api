@@ -2,7 +2,6 @@ package com.easybud.budget_api.model
 
 import jakarta.persistence.*
 import java.math.BigDecimal
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -18,12 +17,6 @@ data class BudgetAmount(
 
     @Column(nullable = false, precision = 19, scale = 2)
     var amount: BigDecimal,
-
-    @Column(name = "period_start", nullable = false)
-    var periodStart: LocalDate,
-
-    @Column(name = "period_end")
-    var periodEnd: LocalDate? = null,
 
     @Column(nullable = true, length = 500)
     var note: String? = null,

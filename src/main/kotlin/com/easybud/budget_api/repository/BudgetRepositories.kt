@@ -18,14 +18,7 @@ interface BudgetCategoryRepository : JpaRepository<BudgetCategory, Long> {
 @Repository
 interface BudgetAmountRepository : JpaRepository<BudgetAmount, Long> {
     fun findByCategoryId(categoryId: Long): List<BudgetAmount>
-    
-    @Query("SELECT a FROM BudgetAmount a WHERE a.periodStart <= :endDate AND (a.periodEnd IS NULL OR a.periodEnd >= :startDate)")
-    fun findByPeriodBetween(startDate: LocalDate, endDate: LocalDate): List<BudgetAmount>
-    
-    @Query("SELECT a FROM BudgetAmount a WHERE a.category.categoryType = :categoryType AND a.periodStart <= :endDate AND (a.periodEnd IS NULL OR a.periodEnd >= :startDate)")
-    fun findByCategoryTypeAndPeriodBetween(
-        categoryType: CategoryType,
-        startDate: LocalDate,
-        endDate: LocalDate
-    ): List<BudgetAmount>
+
+    @Query("SELECT a FROM BudgetAmount a WHERE a.category.effectiveDate <= :endDate AND (a.category.endDate IS NULL OR a.category.endDate >= :startDate)")
+    fun findByCategoryPeriodBetween(startDate: LocalDate, endDate: LocalDate): List<BudgetAmount>
 }
